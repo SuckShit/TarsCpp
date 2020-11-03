@@ -40,11 +40,11 @@ class Transceiver;
 template<typename T>
 T net2host(T len)
 {
-    switch(sizeof(T))
+    switch (sizeof(T))
     {
-        case sizeof(uint8_t): return len;
-        case sizeof(uint16_t): return ntohs(len);
-        case sizeof(uint32_t): return ntohl(len);
+    case sizeof(uint8_t): return len;
+    case sizeof(uint16_t): return ntohs(len);
+    case sizeof(uint32_t): return ntohl(len);
     }
     assert(true);
     return 0;
@@ -161,7 +161,7 @@ public:
      */
     static vector<char> streamRequest(RequestPacket& request, Transceiver *)
     {
-        return request.sBuffer;
+	    return request.sBuffer;
     }
 
     /**
@@ -562,6 +562,16 @@ public:
 
         return TC_NetWorkBuffer::PACKET_FULL;
     }
+
+	 /**
+	  * tars各种协议响应包解析
+	  * @param recvBuffer
+	  * @param done
+	  */
+	static TC_NetWorkBuffer::PACKET_TYPE totalResponse(TC_NetWorkBuffer &in, ResponsePacket &done)
+	{
+		return totalResponseLen<TARS_NET_MIN_PACKAGE_SIZE, TARS_NET_MAX_PACKAGE_SIZE>(in, done);
+	}
 
     template <uint32_t iMinLength, uint32_t iMaxLength>
     static TC_NetWorkBuffer::PACKET_TYPE totalResponseLen(TC_NetWorkBuffer &in, ResponsePacket &rsp)

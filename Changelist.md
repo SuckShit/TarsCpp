@@ -1,3 +1,166 @@
+
+## v2.4.13 2020.10.11
+### en
+- Fix Windows compilation errors (missing bison / flex generated files)
+- Network epoll notification handle is changed to UDP handle instead of socket pipe mode to save the number of handles
+- Fix tars-tools.cmake support mysql link
+### cn
+- 修复windows编译错误(漏提交bison/flex生成的文件) 
+- 网络epoll通知句柄改成udp句柄, 不采用socket pipe模式, 节省句柄数量
+- 修复tars-tools.cmake 支持mysql的link
+
+## v2.4.12 2020.09.23
+### en
+- tc_timer fix compiler warning
+- fix dye bug
+- fix http keep-alive bug
+### cn
+- tc_timer修复编译警告
+- 修复染色的bug
+- 修复http keep-alive bug
+
+## v2.4.11 2020.09.18
+### en
+- fix gtest compiler bug
+- fix epoll memory leak in windows
+- fix tc_encoder crash bug
+- fix tc_clientsocket bug
+- fix tc_timer memory leak
+- fix tc_openssl mode not be used
+- fix TC_ Http2 failure problem (header cannot use temporary variables)
+- always set thread data host info
+- Adding the initialization of enumeration value in the resetDefautlt function
+- Part of the file encoding format is adjusted to utf8 BOM to ensure that there is no problem in Windows compilation
+- tc_common add various date processing functions
+- tc_common add floating point comparison function 
+- tc_thread add multi thread hash logic
+- tc_port add environment variable acquisition and system event registration callback (compatible with multi platform)
+- Adjust tc_sem_mutex event name (under Windows) to facilitate subsequent maintenance
+- rpc add support for http/sock4/sock5 proxy
+- application add ssl bind check
+- Fix the bug of RPC in HTTP short SSL package connection  (under Windows)
+- communicator add update endpoint
+- fix communicator exit logic to avoid possible crash in exit
+- optimize the memory copy problem, reduce the memory copy, and improve the performance
+- Adjust the custom callback and put it in servantproxy
+
+### cn
+- 修复gtest编译错误
+- 修复windows下, epoll.cpp中的内存泄露
+- 修改tc_encoder crash 的bug
+- 修复tc_clientsocket在大包下的bug
+- 修复tc_timer内存泄露问题
+- 修复tc_openssl 代码中mode没生效的bug
+- 修复rpc在http短连接以及ssl大包下的bug(windows下)
+- 修复tc_http2 失败的问题(header不能用临时变量)
+- ServantProxy调用时总是在线程私有变量中设置host info
+- 在resetDefautlt函数中增加枚举值的初始化
+- 部分文件编码格式调整成utf8 bom
+- tc_common增加各类时间处理函数
+- tc_common增加浮点数比较算法
+- tc_thread增加多线程hash逻辑
+- tc_port增加环境变量获取以及系统事件注册回调(兼容多平台)
+- 调整tc_sem_mutex事件名称(windows下), 便于后续维护
+- rpc增加http/sock4/sock5支持
+- application 增加ssl效验
+- communicator增加主动更新endpoint的功能
+- communicator完善退出逻辑, 避免退出时可能的crash
+- 进一步优化内存copy问题, 减少内存copy,提升性能
+- 调整自定义回调, 放在ServantProxy中
+
+## v2.4.10 2020.09.02
+### en
+- fix ssl EndpointManager.cpp bug 
+- gbk2utf8 mode default set to ICONV_IGNORE
+### cn
+- 修复ssl下, EndpointManager.cpp 的bug 
+- 将gbk2utf8 mode 缺省值设置为ICONV_IGNORE
+
+## v2.4.9 2020.08.19
+### en
+- Fix tars-tool.cmake `make upload` bug in linux
+- Update tars-tools.cmake, support multi tars file
+- tc_encoder optimize
+- fix servant http call context release bug
+- fix servant connection reconnect dead cycle
+- fix http servant set timeout bug
+- fix windows roll log bug
+- fix tc_time postAtTime bug
+- remove TARS_SSL in header
+- fix windows gtest build bug
+### cn
+- 修改tars-tool.cmake `make upload` 在linux上bug, cmake用${CMAKE_COMMAND}代替 
+- 修改tars-tools.cmake, 支持多个tars文件
+- 优化tc_encoder
+- 修复http servant 短连接模式下context释放的bug(貌似只会在windows下出现)
+- 修复prx重连可能导致的死循环的问题
+- 修复http servant 设置timeout不正确的问题
+- 修复windows下循环日志不启用的问题
+- 修复tc_time postAtTime的bug
+- 头文件中删除TARS_SSL的宏, 避免内存模型不一致
+- 修改windows gtest编译连接不争取的问题
+
+## v2.4.8 2020.08.05
+### en
+- add tarsmerge, can merge multi tars file to one
+- fix tars-tools.cmake, support: make xxxx-upload-tars, upload tars to web, for test
+- fix when http header has not content-length, tc_http decode bug
+- fix refresh endpoint crash
+### cn
+- 添加 tarsmerge工具, 支持合并多个tars文件到一个
+- 修改tars-tools.cmake, 支持make xxx-upload-tars, 上传本服务的tars文件到web, 方便自动测试
+- 修改当http头没有content-length时的解析bug
+- 修改endpoint更新时可能导致的crash
+
+## v2.4.7 2020.07.19
+### en
+- fix tars-tools.cmake, support ssl link order bug
+- tars2cpp delete routerkey support (for grid, not use now)
+- epoll server add onNewClient callback
+- fix tc_gzip memory leak
+- solve the default threads num problem 
+### cn
+- tars-tools.cmake, 修改ssl 连接顺序不对的问题
+- tars2cpp去掉routerkey(给灰度使用, 目前版本都不再支持)
+- epoll server 增加onNewClient回调
+- fix tc_gzip在某情况下的内存泄露
+- 修改threads缺省参数值为0的bug
+
+## v2.4.6 2020.07.09
+### en
+- fix http parse repsonse bug to support TarsGateway
+### cn
+- 修改http解析响应包的bug
+
+## v2.4.5 2020.07.07
+### en:
+- tars2node support JSON_VERSION.
+### cn:
+- tars2node 工具支持JSON_VERSION 协议。
+
+## v2.4.4 2020.06.19
+### en:
+- add totalResponse for all protocol response;
+- modity tars2cpp for json protocol: gen json protocol default && gen async_response_xx json protocol;
+### cn:
+- 增加 totalResponse，对tars所有协议（tars、tup、json）回包都支持；
+- 修改tars2cpp，默认都生成json协议支持，并修改了 async_response_xx 也支持json回包。
+
+## v2.4.3 2020.06.10
+### en:
+- tc_spin_lock support arm
+- fix tc_http security problem
+- fix tc_mysql table name with database name bug
+- tarscpp create tars protocol, default package optional field
+- fix tars2case 的bug
+
+### cn:
+- tc_spin_lock 支持arm
+- tc_http解析安全问题
+- tc_mysql 表名带db名称时 bug的问题
+- tarscpp协议缺省值默认打包
+- fix tars2case 的bug
+
 ## v2.4.2 2020.06.02
 ### en:
 - Add English commet to some header file commet

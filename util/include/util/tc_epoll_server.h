@@ -32,10 +32,7 @@
 #include "util/tc_common.h"
 #include "util/tc_network_buffer.h"
 #include "util/tc_cas_queue.h"
-
-#if TARS_SSL
 #include "util/tc_openssl.h"
-#endif
 
 using namespace std;
 
@@ -1029,9 +1026,8 @@ public:
 
         std::string getSk(const std::string& ak) const { return (_accessKey == ak) ? _secretKey : ""; }
 
-#if TARS_SSL
-        void setSSLCtx(const shared_ptr<TC_OpenSSL::CTX> &ctx) { _ctx = ctx; }
-#endif
+        void setSSLCtx(const shared_ptr<TC_OpenSSL::CTX>& ctx) { _ctx = ctx; }
+        shared_ptr<TC_OpenSSL::CTX> getSSLCtx() { return _ctx; };
 
 	private:
 		/**
@@ -1221,13 +1217,11 @@ public:
         std::string              _accessKey;
         std::string              _secretKey;
 
-#if TARS_SSL
-
         /**
          * ssl ctx
          */
 	    shared_ptr<TC_OpenSSL::CTX> _ctx;
-#endif
+
         //连接关闭的回调函数 
         //Callback function with connection closed
         close_functor           _closeFunc;
@@ -1401,18 +1395,6 @@ public:
 		 * @param fd
 		 */
 		void close();
-
-//		/**
-//		* 发送TCP
-//      * Send TCP
-//		*/
-//		int sendTcp(const shared_ptr<SendContext> &data);
-//
-//		/**
-//		* 发送Udp
-//      * Send UDP
-//		*/
-//		int sendUdp(const shared_ptr<SendContext> &data);
 
 		/**
 		 * 添加发送buffer
@@ -1589,9 +1571,8 @@ public:
         *该连接的鉴权状态是否初始化了
         */
         bool                _authInit;
-#if TARS_SSL
+
         std::shared_ptr<TC_OpenSSL> _openssl;
-#endif
     };
     ////////////////////////////////////////////////////////////////////////////
     /**
@@ -1898,12 +1879,6 @@ public:
          */
         void setUdpRecvBufferSize(size_t nSize=DEFAULT_RECV_BUFFERSIZE);
 
-//		/**
-//		 * 发送队列的大小
-//		 * Size of sending queue
-//		 * @return size_t
-//		 */
-//		size_t getSendRspSize();
 
     protected:
 
@@ -2253,6 +2228,14 @@ public:
      */
     size_t getLogicThreadNum();
 
+    // 接收新的客户端链接时的回调
+    typedef std::function<void (TC_EpollServer::Connection*)> accept_callback_functor;
+
+    /*
+     * 设置接收链接的回调
+     */
+    void setOnAccept(const accept_callback_functor& f) { _acceptFunc = f; }
+
 	//回调给应用服务
     //Callback to application service
 	typedef std::function<void(TC_EpollServer*)> application_callback_functor;
@@ -2369,6 +2352,10 @@ private:
      */
     heartbeat_callback_functor _heartFunc;
 
+    /**
+     * 接收链接的回调函数
+     */
+    accept_callback_functor _acceptFunc;
 };
 
 typedef TC_AutoPtr<TC_EpollServer> TC_EpollServerPtr;
